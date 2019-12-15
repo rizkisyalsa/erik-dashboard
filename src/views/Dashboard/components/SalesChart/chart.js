@@ -8,12 +8,12 @@ export const data = {
     {
       label: 'Success',
       backgroundColor: palette.primary.main,
-      data: [18000, 5000, 19000, 27000, 29000, 19000, 20000]
+      data: [32, 24, 37, 23, 10, 26, 13]
     },
     {
       label: 'Pending',
       backgroundColor: '#f48fb1',
-      data: [11000, 20000, 12000, 29000, 30000, 25000, 13000]
+      data: [10, 11, 13, 16, 11, 5, 9]
     }
   ]
 };
@@ -41,9 +41,9 @@ export const options = {
           beginAtZero: true,
           min: 0,
           callback: function(value) {
-            const v = value / 1000;
+            const v = value;
 
-            return v === 0 ? 0 : v + 'K';
+            return v;
           }
         },
         gridLines: {

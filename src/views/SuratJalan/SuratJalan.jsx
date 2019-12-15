@@ -131,7 +131,7 @@ const SuratJalan = props => {
       {
         title: 'Tanggal PO',
         field: 'tgl_po',
-        render: row => moment(Date.now(row.tgl_po)).format('DD-MM-YYYY'),
+        render: row => moment(row.tgl_po).format('DD-MM-YYYY'),
         editable: 'never'
       },
       { title: 'Nama pelanggan', field: 'nama_plg', editable: 'never' },

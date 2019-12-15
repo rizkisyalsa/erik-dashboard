@@ -171,7 +171,7 @@ const SignIn = props => {
                   className={classes.bio}
                   variant="body2"
                 >
-                  Penjualan Kardus berbasis Web
+                  Pengelolaan dan laporan produksi
                 </Typography>
               </div>
             </div>
@@ -191,7 +191,7 @@ const SignIn = props => {
                   variant="h2"
                 >
                   Sistem informasi <br />
-                  Penjualan Kardus berbasis Web
+                  Pengelolaan dan Laporan Produksi
                 </Typography>
                 <div className={classes.fields}>
                   <TextField

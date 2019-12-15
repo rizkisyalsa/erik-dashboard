@@ -75,7 +75,7 @@ const DataPo = (props) => {
    const [state] = React.useState({
       columns: [
          { title: 'No PO', field: 'no_po', editable: 'never' },
-         { title: 'Tanggal PO', field: 'tgl_po', render: row => moment(Date.now(row.tgl_po)).format("DD-MM-YYYY"), editable: 'never'},
+         { title: 'Tanggal PO', field: 'tgl_po', render: row => moment(row.tgl_po).format("DD-MM-YYYY"), editable: 'never'},
          { title: 'Nama pelanggan', field: 'nama_plg', editable: 'never' },
          { title: 'Nama Barang', field: 'nama_brg', editable: 'never' },
          { title: 'Jumlah', field: 'jumlah', editable: 'never' },

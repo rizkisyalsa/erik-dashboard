@@ -81,24 +81,6 @@ class Dashboard extends Component {
             >
               <SalesChart className={classes.item} />
             </Grid>
-            <Grid
-              item
-              lg={4}
-              md={12}
-              xl={3}
-              xs={12}
-            >
-              <ProductList className={classes.item} />
-            </Grid>
-            <Grid
-              item
-              lg={8}
-              md={12}
-              xl={9}
-              xs={12}
-            >
-              <OrdersTable className={classes.item} />
-            </Grid>
           </Grid>
         </div>
       </DashboardLayout>

@@ -19,15 +19,63 @@ import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 import Portlet from 'components/Portlet';
 import PortletContent from 'components/PortletContent';
 import PortletFooter from 'components/PortletFooter';
-
-// Palette
 import palette from 'theme/palette';
-
-// Chart configuration
-import { data, options } from './chart';
-
-// Component styles
 import styles from './styles';
+
+// Chart data
+const data = {
+  labels: ['1 Aug', '2 Aug', '3 Aug', '4 Aug', '5 Aug', '6 Aug'],
+  datasets: [
+    {
+      label: 'Success',
+      backgroundColor: palette.primary.main,
+      data: [32, 24, 37, 23, 10, 26, 13]
+    },
+    {
+      label: 'Pending',
+      backgroundColor: '#f48fb1',
+      data: [10, 11, 13, 16, 11, 5, 9]
+    }
+  ]
+};
+
+// Chart options
+const options = {
+  maintainAspectRatio: false,
+  legend: { display: false },
+  scales: {
+    xAxes: [
+      {
+        maxBarThickness: 20,
+        barPercentage: 1,
+        categoryPercentage: 0.25,
+        ticks: {},
+        gridLines: {
+          display: false,
+          drawBorder: false
+        }
+      }
+    ],
+    yAxes: [
+      {
+        ticks: {
+          beginAtZero: true,
+          min: 0,
+          callback: function(value) {
+            const v = value;
+
+            return v;
+          }
+        },
+        gridLines: {
+          color: palette.divider,
+          drawBorder: false
+        }
+      }
+    ]
+  },
+  responsiveAnimationDuration: 1000
+};
 
 const TabsChart = props => {
 
@@ -36,6 +84,7 @@ const TabsChart = props => {
 
     const [lastSevenDaysPo, setLastSevenDaysPo] = useState()
 
+
     useEffect(() => {
       getLastSevenDaysPo()
     }, [])
@@ -43,11 +92,13 @@ const TabsChart = props => {
     const getLastSevenDaysPo = async () => {
       try {
         const res = await axios.get("http://localhost:8001/api/dashboard/lastseven");
-        setLastSevenDaysPo(res.data.rows)
+        setLastSevenDaysPo(res.data)
       } catch (err) {
         console.log(err)
       }
     }
+
+    console.log(lastSevenDaysPo)
 
     return (
       <Portlet
@@ -57,12 +108,14 @@ const TabsChart = props => {
         <PortletContent noPadding>
           <div className={classes.details}>
             <div className={classes.summary}>
-            {lastSevenDaysPo && (
+            {/* {lastSevenDaysPo && (
               <div>
                 <Typography variant="h1">{lastSevenDaysPo.length}</Typography>
                 <Typography variant="body1">total PO</Typography>
               </div>
-            )}
+            )} */}
+            <Typography variant="h1">240</Typography>
+            <Typography variant="body1">total PO</Typography>
             </div>
             <div className={classes.legends}>
               <div className={classes.legend}>
@@ -82,7 +135,7 @@ const TabsChart = props => {
             </div>
           </div>
           <div className={classes.chart}>
-            <Bar
+            <Bar 
               data={data}
               options={options}
             />
