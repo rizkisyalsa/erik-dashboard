@@ -34,7 +34,6 @@ const AuthState = props => {
     }
     try {
       const res = await axios.get('http://localhost:8001/api/user/auth');
-
       dispatch({
         type: USER_LOADED,
         payload: res.data

@@ -9,8 +9,6 @@ import { withStyles } from '@material-ui/core/styles';
 
 // Material components
 import Typography from '@material-ui/core/Typography';
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
-import MoneyOutlinedIcon from '@material-ui/icons/MoneyOutlined';
 
 // Shared components
 import Paper from 'components/Paper';
@@ -35,11 +33,11 @@ class Budget extends Component {
             className={classes.title}
             variant="body2"
           >
-            Info
+            INFO
           </Typography>
           <div className={classes.details}>
-            <Typography variant="h3">Welcome Erik Setiawan...</Typography>
-            &nbsp; &nbsp; &nbsp; &nbsp;<Typography variant="h5" color="primary">(Admin gudang jadi)</Typography>
+            <Typography variant="h3">Grafik Data PO</Typography>
+            &nbsp; &nbsp; &nbsp; &nbsp;<Typography variant="h5" color="primary">7 Hari Terakhir</Typography>
           </div>
         </div>
         <div className={classes.iconWrapper}>

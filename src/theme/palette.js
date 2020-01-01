@@ -15,7 +15,7 @@ export default {
   },
   secondary: {
     contrastText: 'rgba(0, 0, 0, 0.87)',
-    main: '#f48fb1',
+    main: '#ff2121',
     light: '',
     dark: '#37248F'
   },

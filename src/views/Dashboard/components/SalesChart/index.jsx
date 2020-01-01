@@ -98,8 +98,6 @@ const TabsChart = props => {
       }
     }
 
-    console.log(lastSevenDaysPo)
-
     return (
       <Portlet
         {...rest}

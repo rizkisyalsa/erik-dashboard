@@ -95,7 +95,7 @@ const StokBarang = (props) => {
    const getData = () => {
       return query =>
          new Promise((resolve, reject) => {
-            fetch("http://localhost:8001/api/barang" + `?limit=${query.pageSize}&page=${query.page + 1}&search=${query.search}`)
+            fetch(`http://localhost:8001/api/barang?limit=${query.pageSize}&page=${query.page + 1}&search=${query.search}`)
                .then(res => res.json())
                .then(result => {
                   resolve({
@@ -130,7 +130,7 @@ const StokBarang = (props) => {
    const deleteData = () => {
       return oldData =>
          new Promise(resolve => {
-            fetch("http://localhost:8001/api/barang" + `/${oldData.kode_barang}`, {
+            fetch(`http://localhost:8001/api/barang/${oldData.kode_barang}`, {
                method: 'DELETE',
                headers: {
                   'Content-Type': 'application/json'
@@ -153,7 +153,7 @@ const StokBarang = (props) => {
    const updateData = () => {
       return (newData, oldData) =>
          new Promise(resolve => {
-            fetch("http://localhost:8001/api/barang" + `/${oldData.kode_barang}`, {
+            fetch(`http://localhost:8001/api/barang/${oldData.kode_barang}`, {
                method: 'PUT',
                headers: {
                   'Content-Type': 'application/json'

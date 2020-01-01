@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 
+import PrivateRoute from './components/Routing/PrivateRoute'
+
 // Views
 import DataPO from './views/DataPO/DataPO'
 import StokBarang from './views/StokBarang/StokBarang'
@@ -8,7 +10,7 @@ import SuratJalan from './views/SuratJalan/SuratJalan'
 import Laporan from './views/Laporan/Laporan'
 import Dashboard from './views/Dashboard';
 import ProductList from './views/ProductList';
-import UserList from './views/UserList';
+import Users from './views/Users/Users'
 import Typography from './views/Typography';
 import Icons from './views/Icons';
 import Account from './views/Account';
@@ -27,37 +29,37 @@ export default class Routes extends Component {
           from="/"
           to="/dashboard"
         />
-        <Route
+        <PrivateRoute
           component={Dashboard}
           exact
           path="/dashboard"
         />
-        <Route
+        <PrivateRoute
           component={DataPO}
           exact
           path="/data-po"
         />
-        <Route
+        <PrivateRoute
           component={SuratJalan}
           exact
           path="/surat-jalan"
         />
-        <Route
+        <PrivateRoute
           component={StokBarang}
           exact
           path="/stok-barang"
         />
-         <Route
+         <PrivateRoute
           component={Laporan}
           exact
           path="/laporan"
         />
-        <Route
-          component={UserList}
+        <PrivateRoute
+          component={Users}
           exact
           path="/users"
         />
-        <Route
+        <PrivateRoute
           component={ProductList}
           exact
           path="/products"

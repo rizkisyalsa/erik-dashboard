@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 
 // Externals
@@ -15,11 +15,9 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import ListSubheader from '@material-ui/core/ListSubheader';
 import Typography from '@material-ui/core/Typography';
 import DashboardIcon from '@material-ui/icons/DashboardOutlined';
 import PeopleIcon from '@material-ui/icons/PeopleOutlineRounded';
-import InfoIcon from '@material-ui/icons/InfoOutlined';
 import ReceiptIcon from '@material-ui/icons/Receipt';
 import StoreIcon from '@material-ui/icons/Store';
 import DescriptionIcon from '@material-ui/icons/Description';
@@ -28,49 +26,75 @@ import AssignmentIcon from '@material-ui/icons/Assignment';
 // Component styles
 import styles from './styles';
 
-class Sidebar extends Component {
-  render() {
-    const { classes, className } = this.props;
+import ChangeFoto from '../../../../components/ChangeFoto/ChangeFoto';
 
-    const rootClassName = classNames(classes.root, className);
+const Sidebar = props => {
+  const { classes, className } = props;
+  const rootClassName = classNames(classes.root, className);
+  const [open, setOpen] = useState(false);
 
-    return (
-      <nav className={rootClassName}>
-        <div className={classes.logoWrapper}>
-          <Link
-            className={classes.logoLink}
-            to="/"
-          >
-            <img
-              alt="Brainalytica logo"
-              className={classes.logoImage}
-              src="/images/logos/pancamitra.png"
-            />
-          </Link>
-        </div>
-        <Divider className={classes.logoDivider} />
-        <div className={classes.profile}>
-          <Link to="/account">
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  return (
+    <nav className={rootClassName}>
+      <div className={classes.logoWrapper}>
+        <Link
+          className={classes.logoLink}
+          to="/"
+        >
+          <img
+            alt="Brainalytica logo"
+            className={classes.logoImage}
+            src="/images/logos/pancamitra.png"
+          />
+        </Link>
+      </div>
+      <Divider className={classes.logoDivider} />
+      {props.user && (
+        <div
+          className={classes.profile}
+          onClick={handleOpen}
+        >
+          {props.user.foto ? (
             <Avatar
-              alt="Erik Setiawan"
               className={classes.avatar}
-              src="/images/avatars/erik.jpg"
+              src={'http://localhost:8001/foto/' + props.user.foto}
             />
-          </Link>
+          ) : (
+            <Avatar
+              className={classes.avatar}
+            />
+          )}
           <Typography
             className={classes.nameText}
             variant="h6"
           >
-            Erik Setiawan
+            {props.user.name}
           </Typography>
           <Typography
             className={classes.bioText}
             variant="caption"
           >
-            Admin Gudang Jadi
+            {props.user.role}
           </Typography>
         </div>
-        <Divider className={classes.profileDivider} />
+      )}
+      {open && (
+        <ChangeFoto
+          handleClose={handleClose}
+          loadUser={props.loadUser}
+          open={open}
+          user={props.user}
+        />
+      )}
+      <Divider className={classes.profileDivider} />
+      {props.user && (
         <List
           component="div"
           disablePadding
@@ -89,106 +113,189 @@ class Sidebar extends Component {
               primary="Dashboard"
             />
           </ListItem>
-          <ListItem
-            activeClassName={classes.activeListItem}
-            className={classes.listItem}
-            component={NavLink}
-            to="/stok-barang"
-          >
-            <ListItemIcon className={classes.listItemIcon}>
-              <StoreIcon />
-            </ListItemIcon>
-            <ListItemText
-              classes={{ primary: classes.listItemText }}
-              primary="Stok Barang"
-            />
-          </ListItem>
-          <ListItem
-            activeClassName={classes.activeListItem}
-            className={classes.listItem}
-            component={NavLink}
-            to="/data-po"
-          >
-            <ListItemIcon className={classes.listItemIcon}>
-              <DescriptionIcon />
-            </ListItemIcon>
-            <ListItemText
-              classes={{ primary: classes.listItemText }}
-              primary="Data PO"
-            />
-          </ListItem>
-          <ListItem
-            activeClassName={classes.activeListItem}
-            className={classes.listItem}
-            component={NavLink}
-            to="/surat-jalan"
-          >
-            <ListItemIcon className={classes.listItemIcon}>
-              <ReceiptIcon />
-            </ListItemIcon>
-            <ListItemText
-              classes={{ primary: classes.listItemText }}
-              primary="Surat Jalan"
-            />
-          </ListItem>
-          <ListItem
-            activeClassName={classes.activeListItem}
-            className={classes.listItem}
-            component={NavLink}
-            to="/laporan"
-          >
-            <ListItemIcon className={classes.listItemIcon}>
-              <AssignmentIcon />
-            </ListItemIcon>
-            <ListItemText
-              classes={{ primary: classes.listItemText }}
-              primary="Laporan"
-            />
-          </ListItem>
-          <ListItem
-            activeClassName={classes.activeListItem}
-            className={classes.listItem}
-            component={NavLink}
-            to="/users"
-          >
-            <ListItemIcon className={classes.listItemIcon}>
-              <PeopleIcon />
-            </ListItemIcon>
-            <ListItemText
-              classes={{ primary: classes.listItemText }}
-              primary="Users"
-            />
-          </ListItem>
+          {props.user.role === 'Marketing' && (
+            <ListItem
+              activeClassName={classes.activeListItem}
+              className={classes.listItem}
+              component={NavLink}
+              to="/data-po"
+            >
+              <ListItemIcon className={classes.listItemIcon}>
+                <DescriptionIcon />
+              </ListItemIcon>
+              <ListItemText
+                classes={{ primary: classes.listItemText }}
+                primary="Data PO"
+              />
+            </ListItem>
+          )}
+          {props.user.role === 'Kepala gudang jadi' && (
+            <div>
+              <ListItem
+                activeClassName={classes.activeListItem}
+                className={classes.listItem}
+                component={NavLink}
+                to="/stok-barang"
+              >
+                <ListItemIcon className={classes.listItemIcon}>
+                  <StoreIcon />
+                </ListItemIcon>
+                <ListItemText
+                  classes={{ primary: classes.listItemText }}
+                  primary="Stok Barang"
+                />
+              </ListItem>
+              <ListItem
+                activeClassName={classes.activeListItem}
+                className={classes.listItem}
+                component={NavLink}
+                to="/data-po"
+              >
+                <ListItemIcon className={classes.listItemIcon}>
+                  <DescriptionIcon />
+                </ListItemIcon>
+                <ListItemText
+                  classes={{ primary: classes.listItemText }}
+                  primary="Data PO"
+                />
+              </ListItem>
+              <ListItem
+                activeClassName={classes.activeListItem}
+                className={classes.listItem}
+                component={NavLink}
+                to="/surat-jalan"
+              >
+                <ListItemIcon className={classes.listItemIcon}>
+                  <ReceiptIcon />
+                </ListItemIcon>
+                <ListItemText
+                  classes={{ primary: classes.listItemText }}
+                  primary="Surat Jalan"
+                />
+              </ListItem>
+            </div>
+          )}
+          {props.user.role === 'Manager' && (
+            <div>
+              <ListItem
+                activeClassName={classes.activeListItem}
+                className={classes.listItem}
+                component={NavLink}
+                to="/laporan"
+              >
+                <ListItemIcon className={classes.listItemIcon}>
+                  <AssignmentIcon />
+                </ListItemIcon>
+                <ListItemText
+                  classes={{ primary: classes.listItemText }}
+                  primary="Laporan"
+                />
+              </ListItem>
+              <ListItem
+                activeClassName={classes.activeListItem}
+                className={classes.listItem}
+                component={NavLink}
+                to="/users"
+              >
+                <ListItemIcon className={classes.listItemIcon}>
+                  <PeopleIcon />
+                </ListItemIcon>
+                <ListItemText
+                  classes={{ primary: classes.listItemText }}
+                  primary="Users"
+                />
+              </ListItem>
+            </div>
+          )}
         </List>
-        <Divider className={classes.listDivider} />
-        <List
-          component="div"
-          disablePadding
-          subheader={
-            <ListSubheader className={classes.listSubheader}>
-              Support
-            </ListSubheader>
-          }
-        >
-          <ListItem
-            className={classes.listItem}
-            component="a"
-            href="https://devias.io/contact-us"
-            target="_blank"
-          >
-            <ListItemIcon className={classes.listItemIcon}>
-              <InfoIcon />
-            </ListItemIcon>
-            <ListItemText
-              classes={{ primary: classes.listItemText }}
-              primary="Customer support"
-            />
-          </ListItem>
-        </List>
-      </nav>
-    );
-  }
-}
+      )}
+
+      {props.user && (
+        <div>
+          {props.user.role === 'admin' && (
+            <List
+              component="div"
+              disablePadding
+            >
+              <ListItem
+                activeClassName={classes.activeListItem}
+                className={classes.listItem}
+                component={NavLink}
+                to="/stok-barang"
+              >
+                <ListItemIcon className={classes.listItemIcon}>
+                  <StoreIcon />
+                </ListItemIcon>
+                <ListItemText
+                  classes={{ primary: classes.listItemText }}
+                  primary="Stok Barang"
+                />
+              </ListItem>
+              <ListItem
+                activeClassName={classes.activeListItem}
+                className={classes.listItem}
+                component={NavLink}
+                to="/data-po"
+              >
+                <ListItemIcon className={classes.listItemIcon}>
+                  <DescriptionIcon />
+                </ListItemIcon>
+                <ListItemText
+                  classes={{ primary: classes.listItemText }}
+                  primary="Data PO"
+                />
+              </ListItem>
+              <ListItem
+                activeClassName={classes.activeListItem}
+                className={classes.listItem}
+                component={NavLink}
+                to="/surat-jalan"
+              >
+                <ListItemIcon className={classes.listItemIcon}>
+                  <ReceiptIcon />
+                </ListItemIcon>
+                <ListItemText
+                  classes={{ primary: classes.listItemText }}
+                  primary="Surat Jalan"
+                />
+              </ListItem>
+              <ListItem
+                activeClassName={classes.activeListItem}
+                className={classes.listItem}
+                component={NavLink}
+                to="/laporan"
+              >
+                <ListItemIcon className={classes.listItemIcon}>
+                  <AssignmentIcon />
+                </ListItemIcon>
+                <ListItemText
+                  classes={{ primary: classes.listItemText }}
+                  primary="Laporan"
+                />
+              </ListItem>
+              <ListItem
+                activeClassName={classes.activeListItem}
+                className={classes.listItem}
+                component={NavLink}
+                to="/users"
+              >
+                <ListItemIcon className={classes.listItemIcon}>
+                  <PeopleIcon />
+                </ListItemIcon>
+                <ListItemText
+                  classes={{ primary: classes.listItemText }}
+                  primary="Users"
+                />
+              </ListItem>
+            </List>
+          )}
+        </div>
+      )}
+
+      <Divider className={classes.listDivider} />
+    </nav>
+  );
+};
 
 Sidebar.propTypes = {
   className: PropTypes.string,

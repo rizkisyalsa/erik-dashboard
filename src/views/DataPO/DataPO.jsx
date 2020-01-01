@@ -3,6 +3,9 @@ import axios from 'axios';
 import MaterialTable from 'material-table';
 import moment from 'moment';
 
+import IconButton from '@material-ui/core/IconButton';
+import CheckCircleTwoToneIcon from '@material-ui/icons/CheckCircleTwoTone';
+import CancelTwoToneIcon from '@material-ui/icons/CancelTwoTone';
 import Chip from '@material-ui/core/Chip';
 import AddBox from '@material-ui/icons/AddBox';
 import ArrowUpward from '@material-ui/icons/ArrowUpward';
@@ -72,6 +75,45 @@ const DataPo = (props) => {
       })
    }, []);
 
+   const refreshData = () => {
+      tableRef.current && tableRef.current.onQueryChange()
+   }
+
+   const handleAccept = async (noPo, status, namaBarang, jumlah) => {
+      const config = {
+         headers: {
+           'Content-Type': 'application/json'
+         }
+       };
+       try {
+         let result = await axios.put(
+            "http://localhost:8001/api/po/" + noPo,
+           {status, namaBarang, jumlah},
+           config
+         );
+         if(result.data.msg === 'Stock Barang tidak cukup'){
+            alert(result.data.msg)
+         } else {
+            window.location.reload();
+         }
+       } catch (err) {
+         console.log(err);
+       }
+   }
+
+   const handleDelete = async (noPo) => {
+       try {
+         await axios.delete(
+            "http://localhost:8001/api/po/" + noPo
+         );
+         window.location.reload();
+       } catch (err) {
+         console.log(err);
+       }
+   }
+
+
+
    const [state] = React.useState({
       columns: [
          { title: 'No PO', field: 'no_po', editable: 'never' },
@@ -80,7 +122,18 @@ const DataPo = (props) => {
          { title: 'Nama Barang', field: 'nama_brg', editable: 'never' },
          { title: 'Jumlah', field: 'jumlah', editable: 'never' },
          { title: 'Tanggal Kirim', field: 'tgl_krm', type: 'date', render: row => moment((row.tgl_krm)).format("DD-MM-YYYY"), editable: 'never'},
-         { title: 'Status', field: 'status', render: row => <Chip color={row.status === 'pending' ? "secondary":"primary"} label={row.status} /> , lookup: { pending: 'pending', success: 'success' },}
+         { title: 'Status', field: 'status', render: row => <Chip label={row.status === 'pending' ? "pending":"success"} color={row.status === 'pending' ? "secondary":"primary"} variant="outlined" />},
+         { title: 'Action', field: 'no_po', render: row => (
+            <div>
+               {row.status === 'pending' && (
+                  <div style={{'display':'flex'}}>
+                  <IconButton onClick={()=> handleAccept(row.no_po, 'success', row.nama_brg, row.jumlah)} color="primary" aria-label="Accept"><CheckCircleTwoToneIcon /></IconButton>
+                  <IconButton onClick={()=> handleDelete(row.no_po)} color="secondary" aria-label="Reject"><CancelTwoToneIcon /></IconButton>
+                  </div>
+               )}
+            </div>
+         )},
+   
       ]
    });
 
@@ -103,14 +156,10 @@ const DataPo = (props) => {
    const [openAdd, setOpenAdd] = useState(false)
    const modalAdd = (func) => setOpenAdd(!openAdd)
 
-   const refreshData = () => {
-      tableRef.current && tableRef.current.onQueryChange()
-   }
-
    const getData = () => {
       return query =>
          new Promise((resolve, reject) => {
-            fetch("http://localhost:8001/api/po" + `?limit=${query.pageSize}&page=${query.page + 1}&search=${query.search}`)
+            fetch(`http://localhost:8001/api/po?limit=${query.pageSize}&page=${query.page + 1}&search=${query.search}`)
                .then(res => res.json())
                .then(result => {
                   resolve({
@@ -142,52 +191,52 @@ const DataPo = (props) => {
          })
    }
 
-   const deleteData = () => {
-      return oldData =>
-         new Promise(resolve => {
-            fetch("http://localhost:8001/api/po" + `/${oldData.no_po}`, {
-               method: 'DELETE',
-               headers: {
-                  'Content-Type': 'application/json'
-               }
-            })
-               .then(res => res.json())
-               .then(result => {
-                  resolve(
-                     refreshData(),
-                     setSnackbarAdd({
-                        open: true,
-                        message: 'PO berhasil dihapus',
-                        variant: 'error'
-                     })
-                  )
-               })
-         })
-   }
+   // const deleteData = () => {
+   //    return oldData =>
+   //       new Promise(resolve => {
+   //          fetch(`http://localhost:8001/api/po/${oldData.no_po}`, {
+   //             method: 'DELETE',
+   //             headers: {
+   //                'Content-Type': 'application/json'
+   //             }
+   //          })
+   //             .then(res => res.json())
+   //             .then(result => {
+   //                resolve(
+   //                   refreshData(),
+   //                   setSnackbarAdd({
+   //                      open: true,
+   //                      message: 'PO berhasil dihapus',
+   //                      variant: 'error'
+   //                   })
+   //                )
+   //             })
+   //       })
+   // }
 
-   const updateData = () => {
-      return (newData, oldData) =>
-         new Promise(resolve => {
-            fetch("http://localhost:8001/api/po" + `/${oldData.no_po}`, {
-               method: 'PUT',
-               headers: {
-                  'Content-Type': 'application/json'
-               },
-               body: JSON.stringify(newData)
-            })
-               .then(res => res.json())
-               .then(result => {
-                  resolve(
-                     refreshData(),
-                     setSnackbarAdd({
-                        open: true,
-                        message: 'PO berhasil di update',
-                        variant: 'info'
-                     })
-                  )
-               })
-         })
-   }
+   // const updateData = () => {
+   //    return (newData, oldData) =>
+   //       new Promise(resolve => {
+   //          fetch(`http://localhost:8001/api/po/${oldData.no_po}`, {
+   //             method: 'PUT',
+   //             headers: {
+   //                'Content-Type': 'application/json'
+   //             },
+   //             body: JSON.stringify(newData)
+   //          })
+   //             .then(res => res.json())
+   //             .then(result => {
+   //                resolve(
+   //                   refreshData(),
+   //                   setSnackbarAdd({
+   //                      open: true,
+   //                      message: 'PO berhasil di update',
+   //                      variant: 'info'
+   //                   })
+   //                )
+   //             })
+   //       })
+   // }
 
    return (
       <DashboardLayout title="Data PO">
@@ -213,7 +262,6 @@ const DataPo = (props) => {
             <MaterialTable
                title="Data Pre Order"
                tableRef={tableRef}
-               icons={tableIcons}
                columns={state.columns}
                data={getData()}
                actions={[
@@ -230,10 +278,10 @@ const DataPo = (props) => {
                      onClick: () => refreshData()
                   }
                ]}
-               editable={{
-                  onRowDelete: deleteData(),
-                  onRowUpdate: updateData()
-               }}
+               // editable={{
+               //    onRowDelete: deleteData(),
+               //    onRowUpdate: updateData()
+               // }}
                options={{
                   actionsColumnIndex: -1,
                   exportButton: true,

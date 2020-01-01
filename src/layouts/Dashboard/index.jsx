@@ -45,7 +45,7 @@ const DashboardLayout = props => {
     }));
   };
 
-  const { classes, width, title, children } = props;
+  const { classes, title, children } = props;
   const { isOpen } = state;
 
   const shiftTopbar = isOpen && !isMobile;
@@ -67,7 +67,7 @@ const DashboardLayout = props => {
         onClose={handleClose}
         open={isOpen}
         variant={isMobile ? 'temporary' : 'persistent'}>
-        <Sidebar className={classes.sidebar} />
+        <Sidebar className={classes.sidebar} user={authContext.user} loadUser={authContext.loadUser}/>
       </Drawer>
       <main
         className={classNames(classes.content, {

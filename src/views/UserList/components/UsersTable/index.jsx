@@ -101,15 +101,6 @@ class UsersTable extends Component {
               <TableHead>
                 <TableRow>
                   <TableCell align="left">
-                    <Checkbox
-                      checked={selectedUsers.length === users.length}
-                      color="primary"
-                      indeterminate={
-                        selectedUsers.length > 0 &&
-                        selectedUsers.length < users.length
-                      }
-                      onChange={this.handleSelectAll}
-                    />
                     Name
                   </TableCell>
                   <TableCell align="left">ID</TableCell>
@@ -141,14 +132,6 @@ class UsersTable extends Component {
                     >
                       <TableCell className={classes.tableCell}>
                         <div className={classes.tableCellInner}>
-                          <Checkbox
-                            checked={selectedUsers.indexOf(user.id) !== -1}
-                            color="primary"
-                            onChange={event =>
-                              this.handleSelectOne(event, user.id)
-                            }
-                            value="true"
-                          />
                           <Avatar
                             className={classes.avatar}
                             src={user.avatarUrl}

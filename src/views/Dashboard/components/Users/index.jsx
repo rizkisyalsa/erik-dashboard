@@ -20,7 +20,7 @@ import styles from './styles';
 
 class Users extends Component {
   render() {
-    const { classes, className, ...rest } = this.props;
+    const { totalUser, classes, className, ...rest } = this.props;
 
     const rootClassName = classNames(classes.root, className);
 
@@ -37,7 +37,7 @@ class Users extends Component {
             TOTAL USERS
           </Typography>
           <div className={classes.details}>
-            <Typography variant="h3">5</Typography>
+            <Typography variant="h3">{totalUser}</Typography>
             <Typography
               className={classes.difference}
               variant="body2"

@@ -6,7 +6,6 @@ import SnackbarComponent from '../../components/Snackbar/SnackbarComponent';
 // Externals
 import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
-import _ from 'underscore';
 
 // Material helpers
 import { withStyles } from '@material-ui/core/styles/index';
@@ -76,18 +75,6 @@ const SignIn = props => {
     //eslint-disable-next-line
   }, []);
 
-  // const validateForm = _.debounce(() => {
-  //   const { values } = state;
-
-  //   const newState = { ...state };
-  //   const errors = validate(values, schema);
-
-  //   newState.errors = errors || {};
-  //   newState.isValid = errors ? false : true;
-
-  //   setState(newState);
-  // }, 300);
-
   const handleFieldChange = (field, value) => {
     const newState = { ...state };
 
@@ -105,12 +92,6 @@ const SignIn = props => {
 
     setState({...state, isLoading: true });
     login(values);
-    // history.push('/dashboard');
-    // if error
-    // this.setState({
-    //   isLoading: false,
-    //   serviceError: error
-    // });
   };
 
   const handleCloseSnackbarAdd = (event, reason) => {
@@ -125,7 +106,7 @@ const SignIn = props => {
   };
 
   const { classes } = props;
-  const { values, touched, errors, isValid, submitError, isLoading } = state;
+  const { values, touched, errors, submitError, isLoading } = state;
 
   const showUsernameError = touched.username && errors.username;
   const showPasswordError = touched.password && errors.password;
@@ -165,13 +146,13 @@ const SignIn = props => {
                   className={classes.name}
                   variant="body1"
                 >
-                  Sistem informasi
+                  Jl. Palem Manis 3 No 65 Jatiuwung Tangerang Banten, 
                 </Typography>
                 <Typography
                   className={classes.bio}
                   variant="body2"
                 >
-                  Pengelolaan dan laporan produksi
+                  RT.004/RW.003, Gandasari, Jatiuwung, Tangerang City, Banten 15136
                 </Typography>
               </div>
             </div>

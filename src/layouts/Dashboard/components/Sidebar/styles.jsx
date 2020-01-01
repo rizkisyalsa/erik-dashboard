@@ -30,7 +30,8 @@ export default theme => ({
   },
   avatar: {
     width: '100px',
-    height: '100px'
+    height: '100px',
+    backgroundColor: theme.palette.primary.main,
   },
   nameText: {
     marginTop: theme.spacing.unit * 2
