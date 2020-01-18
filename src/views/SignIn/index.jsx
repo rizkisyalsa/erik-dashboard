@@ -23,7 +23,6 @@ import styles from './styles';
 const SignIn = props => {
   const authContext = useContext(AuthContext);
   const { token, login, error, clearErrors, isAuthenticated } = authContext;
-
   const [state, setState] = useState({
     values: {
       username: '',

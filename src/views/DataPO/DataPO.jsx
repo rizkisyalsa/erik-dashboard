@@ -158,10 +158,12 @@ const DataPo = (props) => {
 
    const getData = () => {
       return query =>
+      
          new Promise((resolve, reject) => {
             fetch(`http://localhost:8001/api/po?limit=${query.pageSize}&page=${query.page + 1}&search=${query.search}`)
                .then(res => res.json())
                .then(result => {
+                  console.log(result)
                   resolve({
                      data: result[0].data, // your data array
                      page: result[0].page - 1, // current page number

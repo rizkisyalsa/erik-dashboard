@@ -117,11 +117,19 @@ const Users = props => {
       }
     };
     try {
-      await axios.post(
+      const result = await axios.post(
         'http://localhost:8001/api/user/register',
         state,
         config
       );
+      if(result.data.msg === "Username already exists"){
+        setSnackbarAdd({
+          open: true,
+          message: "username sudah ada, silahkan masukan username baru",
+          variant: 'error'
+       })
+        return
+      }
       getUser()
       setSnackbarAdd({
         open: true,
